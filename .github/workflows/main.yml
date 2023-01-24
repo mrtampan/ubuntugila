@@ -24,7 +24,7 @@ jobs:
           sudo tee /etc/apt/sources.list.d/ngrok.list && \
           sudo apt update && sudo apt install ngrok
         echo running ngrok
-        sudo ngrok authtoken {{ github.event.inputs.code }}
+        sudo ngrok authtoken ${{ github.event.inputs.code }}
         sudo ngrok tcp 5900 --region=in &
         echo Download: Keep Alive
         wget https://raw.githubusercontent.com/relitai/Github-Action-CRD/main/loop.sh
