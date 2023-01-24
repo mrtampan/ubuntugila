@@ -1,0 +1,32 @@
+name: Anuan
+on: 
+  workflow_dispatch:
+    inputs:
+      code:
+        description: 'Token ngrok'
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Create User
+      run: sudo useradd -m laknat && sudo adduser laknat sudo && echo 'laknat:laknat' | sudo chpasswd
+    - name: Doanload & Install files
+      run: | 
+        echo Update: APT
+        sudo apt update
+        echo Install: Ubuntu Desktop
+        sudo apt install ubuntu-desktop
+        echo Download: Ngrok
+        curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
+          sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && \
+          echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | \
+          sudo tee /etc/apt/sources.list.d/ngrok.list && \
+          sudo apt update && sudo apt install ngrok
+        echo running ngrok
+        sudo ngrok authtoken {{ github.event.inputs.code }}
+        sudo ngrok tcp 5900 --region=in &
+        echo Download: Keep Alive
+        wget https://raw.githubusercontent.com/relitai/Github-Action-CRD/main/loop.sh
+    - name: Done! You can see the machine in list now.
+      run: bash loop.sh
