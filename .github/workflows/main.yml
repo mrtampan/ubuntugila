@@ -15,8 +15,8 @@ jobs:
       run: | 
         echo Update: APT
         sudo apt update
-        echo Install: Ubuntu Desktop
-        sudo apt install ubuntu-desktop
+        echo Install: Xubuntu Desktop
+        sudo apt install xubuntu-desktop
         echo Download: Ngrok
         curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
           sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && \
@@ -27,6 +27,6 @@ jobs:
         sudo ngrok authtoken ${{ github.event.inputs.code }}
         sudo ngrok tcp 5900 --region=in &
         echo Download: Keep Alive
-        wget https://raw.githubusercontent.com/relitai/Github-Action-CRD/main/loop.sh
+        wget https://raw.githubusercontent.com/mrtampan/ubuntugila/main/loop.sh
     - name: Done! You can see the machine in list now.
       run: bash loop.sh
